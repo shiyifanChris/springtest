@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+
+    <!-- 使用annotation(注解)
+    <context:annotation-config></context:annotation-config>
+    &lt;!&ndash; 自动扫描Action,Service,Dao,po &ndash;&gt;
+    &lt;!&ndash; <context:component-scan base-package="com.lemon.action,com.lemon.service,com.lemon.dao,com.lemon.po"></context:component-scan> &ndash;&gt;
+    <context:component-scan base-package="com.crm"></context:component-scan>
+
+
+
+    &lt;!&ndash; 配置数据源 &ndash;&gt;
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="jdbc:mysql://localhost:3306/crm?characterEncoding=UTF-8">
+        </property>
+        <property name="username" value="root"></property>
+        <property name="password" value="ou134568"></property>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+    </bean>
+
+
+
+    &lt;!&ndash; 生成SessionFactory &ndash;&gt;
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        &lt;!&ndash; 使用某个数据源生成SessionFactory &ndash;&gt;
+        <property name="dataSource" ref="dataSource"></property>
+        &lt;!&ndash; 配置Hibernate的相关属性 &ndash;&gt;
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                &lt;!&ndash; <value>com.lemon.po.User</value>
+                <value>com.lemon.po.Department</value> &ndash;&gt;
+                <value>com.crm.po.CrmCustomer</value>
+                <value>com.crm.po.CrmCustomerContact</value>
+                <value>com.crm.po.SysCustomerLevel</value>
+                <value>com.crm.po.SysCustomerState</value>
+                <value>com.crm.po.SysUserInfo</value>
+            </list>
+        </property>
+    </bean>
+
+
+
+    &lt;!&ndash; 配置事务管理器 &ndash;&gt;
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+
+
+
+    &lt;!&ndash; 配置事务管理的通知 &ndash;&gt;
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            &lt;!&ndash; 配置事务的传播特性 &ndash;&gt;
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="query*" read-only="true"/>
+            &lt;!&ndash; 本操作内如果有事务，则使用事务，如果没有，则开启新的事务 &ndash;&gt;
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+
+
+    &lt;!&ndash; 切面配置 &ndash;&gt;
+    <aop:config>
+        &lt;!&ndash; <aop:pointcut expression="execution(* com.lemon.service.impl.*.*(..))" id="transactionPointcut"/> &ndash;&gt;
+        <aop:pointcut expression="execution(* com.crm..service.impl.*.*(..))" id="transactionPointcut"/>
+        <aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut"/>
+    </aop:config>-->
+
+    <bean id="mytestBean" class="mytest.bean.MytestBean"/>
+
+</beans>
