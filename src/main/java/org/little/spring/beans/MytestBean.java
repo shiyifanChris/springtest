@@ -1,4 +1,4 @@
-package mytest.bean;
+package org.little.spring.beans;
 
 /**
  * Created by shiyifan on 2018/5/31.

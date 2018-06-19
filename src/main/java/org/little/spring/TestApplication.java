@@ -1,6 +1,6 @@
-package mytest;
+package org.little.spring;
 //
-//import mytest.bean.MytestBean;
+//import MytestBean;
 //import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
