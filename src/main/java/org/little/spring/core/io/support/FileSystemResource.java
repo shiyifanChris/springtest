@@ -17,14 +17,11 @@ public class FileSystemResource implements Resource{
 
 	private File file;
 
-	public FileSystemResource(String filePath) {
-		this(filePath,null);
-	}
 
-	public FileSystemResource(String filePath, ClassLoader classLoader) {
+	public FileSystemResource(String filePath) {
 		Assert.notNull(filePath," not be null");
 		this.filePath = filePath;
-		this.file = classLoader==null? new File(filePath):this.file;
+		this.file = new File(filePath);
 	}
 
 	@Override

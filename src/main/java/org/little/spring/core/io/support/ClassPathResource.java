@@ -1,7 +1,6 @@
 package org.little.spring.core.io.support;
 
 import org.little.spring.core.io.Resource;
-import org.little.spring.utils.ClassUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,7 +24,7 @@ public class ClassPathResource implements Resource{
 
 	public ClassPathResource(String filePath, ClassLoader classLoader) {
 		this.filePath = filePath;
-		this.classLoader = (classLoader == null? ClassUtils.getDefaultClassLoader():this.classLoader);
+		this.classLoader = classLoader ;
 	}
 
 	@Override
