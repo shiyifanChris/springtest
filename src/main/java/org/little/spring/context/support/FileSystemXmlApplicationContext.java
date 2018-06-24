@@ -20,6 +20,6 @@ public class FileSystemXmlApplicationContext extends AbstractApplicationContext 
 
 	@Override
 	public Resource getResourceByPath(String filePath) {
-		return new FileSystemResource(filePath,getBeanClassLoader());
+		return new FileSystemResource(filePath);
 	}
 }

@@ -1,5 +1,6 @@
 package org.little.spring.context;
 
+
 import org.little.spring.beans.factory.config.ConfigurableBeanFactory;
 
 /**
@@ -8,5 +9,6 @@ import org.little.spring.beans.factory.config.ConfigurableBeanFactory;
  * @author shiyifan
  * @date 2018/06/18
  */
-public interface ApplicationContext extends ConfigurableBeanFactory{
+public interface ApplicationContext extends ConfigurableBeanFactory {
+    Object getBean(String beanId);
 }
