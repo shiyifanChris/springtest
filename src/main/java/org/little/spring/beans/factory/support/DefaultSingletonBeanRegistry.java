@@ -14,9 +14,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2018/06/19
  */
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
+	//保存singleton bean实例 map
+	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(64);
 
-	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<String, Object>(64);
-
+	/**
+	 * 保存singleton bean实例
+	 * @param beanName
+	 * @param singletonObject
+	 */
 	@Override
 	public void registerSingleton(String beanName, Object singletonObject) {
 		Assert.notNull(beanName,"beanName can't be null!");
@@ -28,6 +33,11 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 		this.singletonObjects.put(beanName, singletonObject);
 	}
 
+	/**
+	 * 获取bean实例
+	 * @param beanName
+	 * @return
+	 */
 	@Override
 	public Object getSingleton(String beanName) {
 		return this.singletonObjects.get(beanName);

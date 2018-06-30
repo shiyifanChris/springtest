@@ -7,6 +7,7 @@ import org.little.spring.beans.factory.BeanDefinition;
  *
  * @author shiyifan
  * @date 2018/06/13
+ * 对应xml bean标签的属性
  */
 public class GenericBeanDefinition implements BeanDefinition {
 

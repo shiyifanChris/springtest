@@ -30,6 +30,10 @@ public class XmlBeanDefinitionReader {
 		this.registry = registry;
 	}
 
+	/**
+	 * 解析xml
+	 * @param resource
+	 */
 	public void loadBeanDefinitions(Resource resource) {
 		try{
 			SAXReader reader = new SAXReader();

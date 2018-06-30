@@ -16,14 +16,19 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2018/06/13
  */
 public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory,BeanDefinitionRegistry {
-
+	//存放BeanDefinition
 	private ConcurrentHashMap<String,BeanDefinition> beanMap = new ConcurrentHashMap<>();
 	private ClassLoader beanClassLoader;
-
+//	xml bean标签属性
 	public static final String ID_ATTRIBUTE = "id";
 	public static final String NAME_ATTRIBUTE = "class";
 	public static final String SCOPE_ATTRIBUTE = "scope";
 
+	/**
+	 * 获取beanDefinition
+	 * @param beanName name
+	 * @return
+	 */
 	public BeanDefinition getBeanDefinition(String beanName) {
 		BeanDefinition bd = beanMap.get(beanName);
 		if(bd ==null) {
@@ -33,6 +38,11 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
 		}
 	}
 
+	/**
+	 * 创建或 获取bean实例
+	 * @param beanId
+	 * @return
+	 */
 	@Override
 	public Object getBean(String beanId) {
 		if(Strings.isNullOrEmpty(beanId)) {
@@ -40,6 +50,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
 		}else{
 			BeanDefinition bd = this.getBeanDefinition(beanId);
 			String className = bd.getBeanClassName();
+			//判断是否是singleton
 			if(bd.isSingleton()){
 				Object bean = getSingleton(beanId);
 				if(Objects.isNull(bean)){
@@ -53,6 +64,11 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
 		}
 	}
 
+	/**
+	 * 创建bean
+	 * @param className bean全路径
+	 * @return
+	 */
 	private Object createBean(String className) {
 		ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
 		try {

@@ -5,6 +5,7 @@ package org.little.spring.beans.factory;
  *
  * @author shiyifan
  * @date 2018/06/13
+ *
  */
 public interface BeanDefinition {
 
