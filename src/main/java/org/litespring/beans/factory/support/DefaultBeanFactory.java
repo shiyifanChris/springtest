@@ -1,6 +1,7 @@
 package org.litespring.beans.factory.support;
 
 import com.google.common.base.Strings;
+import org.apache.commons.beanutils.BeanUtils;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.SimpleTypeConverter;
 import org.litespring.beans.factory.config.RuntimeBeanReference;
@@ -86,23 +87,24 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
 		BeanDefinitionValueResolver valueResolver = new BeanDefinitionValueResolver(this);
 		try {
 			//拿到这个bean的信息
-			BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
+//			BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
 			//获得属性描述
-			PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
-			SimpleTypeConverter typeConverter = new SimpleTypeConverter();
+//			PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
+//			SimpleTypeConverter typeConverter = new SimpleTypeConverter();
 			for (PropertyValue propertyValue : propertyValues) {
 				String name = propertyValue.getName();
 				Object pv = propertyValue.getValue();
 				Object resolvedValue = valueResolver.resolveValueIfNecessary(pv);
-				for (PropertyDescriptor pd : pds) {
-					if(name.equals(pd.getName())){
-						Method writeMethod = pd.getWriteMethod();
-						Object convertValue = typeConverter.convertIfNecessary(resolvedValue, pd.getPropertyType());
-						//根据参数和相关属性调用方法
-						writeMethod.invoke(bean,convertValue);
-						continue;
-					}
-				}
+				BeanUtils.setProperty(bean,name,resolvedValue);
+//				for (PropertyDescriptor pd : pds) {
+//					if(name.equals(pd.getName())){
+//						Method writeMethod = pd.getWriteMethod();
+//						Object convertValue = typeConverter.convertIfNecessary(resolvedValue, pd.getPropertyType());
+//						//根据参数和相关属性调用方法
+//						writeMethod.invoke(bean,convertValue);
+//						continue;
+//					}
+//				}
 			}
 		} catch (Exception e) {
 			throw new BeanCreationException("Failed to obtain BeanInfo for class [" + bd.getBeanClassName() + "]", e);

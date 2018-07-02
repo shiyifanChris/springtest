@@ -45,13 +45,13 @@ public class SimpleTypeConverter implements TypeConverter {
 
     private <T> PropertyEditor getDefaultEditor(Class<T> requiredType) {
         if (defaultEditors == null) {
-            inittDefaultEditor();
+            initDefaultEditor();
         }
         return defaultEditors.get(requiredType);
     }
 
-    private void inittDefaultEditor() {
-        this.defaultEditors = new HashMap<Class<?>, PropertyEditor>(64);
+    private void initDefaultEditor() {
+        this.defaultEditors = new HashMap<>(64);
 
         // Spring's CustomBooleanEditor accepts more flag values than the JDK's default editor.
         this.defaultEditors.put(boolean.class, new CustomBooleanEditor(false));
