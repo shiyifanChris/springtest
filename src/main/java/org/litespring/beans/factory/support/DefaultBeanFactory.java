@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import org.apache.commons.beanutils.BeanUtils;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.SimpleTypeConverter;
+import org.litespring.beans.factory.config.ConfigurableBeanFactory;
 import org.litespring.beans.factory.config.RuntimeBeanReference;
 import org.litespring.utils.ClassUtils;
 import org.litespring.beans.factory.BeanCreationException;
@@ -25,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author shiyifan
  * @date 2018/06/13
  */
-public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory,BeanDefinitionRegistry {
+public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory,BeanDefinitionRegistry {
 	//存放BeanDefinition
 	private ConcurrentHashMap<String,BeanDefinition> beanMap = new ConcurrentHashMap<>();
 	private ClassLoader beanClassLoader;
@@ -112,12 +113,17 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
 	}
 
 	private Object initBean(BeanDefinition bd) {
-		ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
-		try {
-			Class<?> bean = classLoader.loadClass(bd.getBeanClassName());
-			return bean.newInstance();
-		} catch (Exception e) {
-			throw new BeanCreationException(bd.getBeanClassName(),"create Bean exception",e);
+		if(bd.hasConstructorArgumentValues()){
+			ConstructorResolver resolver = new ConstructorResolver(this);
+			return resolver.autowireConstructor(bd);
+		}else {
+			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+			try {
+				Class<?> bean = classLoader.loadClass(bd.getBeanClassName());
+				return bean.newInstance();
+			} catch (Exception e) {
+				throw new BeanCreationException(bd.getBeanClassName(), "create Bean exception", e);
+			}
 		}
 	}
 

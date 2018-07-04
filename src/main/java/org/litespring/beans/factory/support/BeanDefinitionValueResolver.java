@@ -1,26 +1,31 @@
 package org.litespring.beans.factory.support;
 
 import org.litespring.beans.factory.BeanFactory;
-import org.litespring.beans.factory.config.TypedStringValue;
 import org.litespring.beans.factory.config.RuntimeBeanReference;
+import org.litespring.beans.factory.config.TypedStringValue;
 
 public class BeanDefinitionValueResolver {
+    private final BeanFactory beanFactory;
 
-    private DefaultBeanFactory beanFactory ;
+    public BeanDefinitionValueResolver(
+            BeanFactory beanFactory) {
 
-    public BeanDefinitionValueResolver(DefaultBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 
-    public Object resolveValueIfNecessary(Object pv) {
-        if(pv instanceof RuntimeBeanReference){
-            RuntimeBeanReference obj = (RuntimeBeanReference) pv;
-            Object bean = beanFactory.getBean(obj.getBeanName());
+    public Object resolveValueIfNecessary(Object value) {
+
+        if (value instanceof RuntimeBeanReference) {
+            RuntimeBeanReference ref = (RuntimeBeanReference) value;
+            String refName = ref.getBeanName();
+            Object bean = this.beanFactory.getBean(refName);
             return bean;
-        }else if(pv instanceof TypedStringValue){
-            return ((TypedStringValue) pv).getValue();
-        }else{
-            throw new RuntimeException("the value " + pv +" has not implemented");
+
+        }else if (value instanceof TypedStringValue) {
+            return ((TypedStringValue) value).getValue();
+        } else{
+            //TODO
+            throw new RuntimeException("the value " + value +" has not implemented");
         }
     }
 }

@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.litespring.beans.BeanDefinition;
+import org.litespring.beans.ConstructorArgument;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.factory.BeanDefinitionStoreException;
 import org.litespring.beans.factory.config.RuntimeBeanReference;
@@ -35,11 +36,17 @@ public class XmlBeanDefinitionReader {
 
 	public static final String PROPERTY_ELEMENT = "property";
 
+	public static final String BEAN_ELEMENT = "bean";
+
 	public static final String REF_ATTRIBUTE = "ref";
 
 	public static final String VALUE_ATTRIBUTE = "value";
 
 	public static final String NAME_ATTRIBUTE = "name";
+
+	public static final String CONSTRUCTOR_ARG_ELEMENT = "constructor-arg";
+
+	public static final String TYPE_ATTRIBUTE = "type";
 
 	private BeanDefinitionRegistry registry;
 
@@ -58,7 +65,7 @@ public class XmlBeanDefinitionReader {
 			SAXReader reader = new SAXReader();
 			Document document = reader.read(resource.getInputStream());
 			Element rootElement = document.getRootElement();
-			Iterator<Element> iterator = rootElement.elementIterator();
+			Iterator<Element> iterator = rootElement.elementIterator(BEAN_ELEMENT);
 //			List elements = rootElement.elements();
 			while (iterator.hasNext()){
 				Element bean = iterator.next();
@@ -66,6 +73,7 @@ public class XmlBeanDefinitionReader {
 				String name =bean.attributeValue(CLASS_ATTRIBUTE);
 				String scope =bean.attributeValue(SCOPE_ATTRIBUTE);
 				BeanDefinition bd = new GenericBeanDefinition(id,name);
+				parseConstructorArgElements(bean,bd);
 				parseProperties(bean,bd);
 				if(!Strings.isNullOrEmpty(scope)){
 					bd.setScope(scope);
@@ -78,12 +86,39 @@ public class XmlBeanDefinitionReader {
 	}
 
 	/**
+	 * 获取constructor标签列表
+	 * @param bean
+	 * @param bd
+	 */
+	private void parseConstructorArgElements(Element bean, BeanDefinition bd) {
+		Iterator<Element> constructor = bean.elementIterator(CONSTRUCTOR_ARG_ELEMENT);
+		while (constructor.hasNext()){
+			Element cons = constructor.next();
+			parseConstructorArgElement(cons,bd);
+		}
+	}
+
+	private void parseConstructorArgElement(Element cons, BeanDefinition bd) {
+		String ref = cons.attributeValue(REF_ATTRIBUTE);
+		String value = cons.attributeValue(VALUE_ATTRIBUTE);
+		Object obj = parsePropertyValue(cons, bd, null);
+		ConstructorArgument.ValueHolder valueHolder = new ConstructorArgument.ValueHolder(obj);
+		if (StringUtils.hasLength(ref)) {
+			valueHolder.setType(ref);
+		}
+		if (StringUtils.hasLength(value)) {
+			valueHolder.setName(value);
+		}
+		bd.getConstructorArgument().addArgumentValue(valueHolder);
+	}
+
+	/**
 	 * 解析property标签
 	 * @param bean
 	 * @param bd
 	 */
 	private void parseProperties(Element bean, BeanDefinition bd) {
-		Iterator<Element> propertiesIterator = bean.elementIterator();
+		Iterator<Element> propertiesIterator = bean.elementIterator(PROPERTY_ELEMENT);
 		while (propertiesIterator.hasNext()){
 			Element property = propertiesIterator.next();
 			//name 属性
@@ -93,7 +128,7 @@ public class XmlBeanDefinitionReader {
 				return;
 			}
 			//获取property value或ref属性
-			Object val = parsePropertyValue(property);
+			Object val = parsePropertyValue(property,bd,name);
 			PropertyValue propertyValue = new PropertyValue(name,val);
 			bd.getPropertyValues().add(propertyValue);
 		}
@@ -102,13 +137,21 @@ public class XmlBeanDefinitionReader {
 	/**
 	 * 获取property标签的值
 	 * @param property
+	 * @param bd
+	 * @param name
 	 * @return
 	 */
-	private Object parsePropertyValue(Element property) {
+	private Object parsePropertyValue(Element property, BeanDefinition bd, String propertyName) {
+		String elementName = (propertyName != null) ?
+				"<property> element for property '" + propertyName + "'" :
+				"<constructor-arg> element";
 		String ref = property.attributeValue(REF_ATTRIBUTE);
 		String value = property.attributeValue(VALUE_ATTRIBUTE);
 		//判断是ref 还是value
 		if(StringUtils.hasText(ref)){
+			if (!StringUtils.hasText(ref)) {
+				logger.error(elementName + " contains empty 'ref' attribute");
+			}
 			RuntimeBeanReference refBean = new RuntimeBeanReference(ref);
 			return refBean;
 		}else if(StringUtils.hasText(value)){
