@@ -31,5 +31,7 @@ public interface BeanDefinition {
 
 	public boolean hasConstructorArgumentValues();
 
-	public String getID();
+	public String getId();
+
+	public String setId(String id);
 }

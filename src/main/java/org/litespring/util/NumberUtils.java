@@ -1,4 +1,4 @@
-package org.litespring.utils;
+package org.litespring.util;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

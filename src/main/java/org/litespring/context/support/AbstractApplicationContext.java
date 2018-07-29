@@ -4,12 +4,7 @@ import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.beans.factory.xml.XmlBeanDefinitionReader;
 import org.litespring.context.ApplicationContext;
 import org.litespring.core.io.Resource;
-import org.litespring.utils.ClassUtils;
-import org.litespring.beans.factory.support.DefaultBeanFactory;
-import org.litespring.beans.factory.xml.XmlBeanDefinitionReader;
-import org.litespring.context.ApplicationContext;
-import org.litespring.core.io.Resource;
-import org.litespring.utils.ClassUtils;
+import org.litespring.util.ClassUtils;
 
 /**
  * Created by shiyifan on 2018/6/19.

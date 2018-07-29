@@ -16,7 +16,7 @@ import org.litespring.core.io.Resource;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.litespring.utils.StringUtils;
+import org.litespring.util.StringUtils;
 
 import java.util.Iterator;
 
@@ -138,7 +138,7 @@ public class XmlBeanDefinitionReader {
 	 * 获取property标签的值
 	 * @param property
 	 * @param bd
-	 * @param name
+	 * @param propertyName
 	 * @return
 	 */
 	private Object parsePropertyValue(Element property, BeanDefinition bd, String propertyName) {

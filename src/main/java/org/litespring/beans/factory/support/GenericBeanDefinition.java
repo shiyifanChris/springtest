@@ -76,16 +76,20 @@ public class GenericBeanDefinition implements BeanDefinition {
 		return !constructorArgument.isEmpty();
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+	@Override
+	public String setId(String id) {
+		return this.id = id;
 	}
 
 	@Override
-	public String getID() {
-		return id;
+	public String getId() {
+		return this.id;
+	}
+
+	public void setBeanClassName(String beanClassName) {
+		this.beanClassName = beanClassName;
+	}
+
+	public GenericBeanDefinition() {
 	}
 }

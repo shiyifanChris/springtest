@@ -1,6 +1,6 @@
 package org.litespring.core.io;
 
-import org.litespring.utils.Assert;
+import org.litespring.util.Assert;
 
 import java.io.*;
 
@@ -21,6 +21,12 @@ public class FileSystemResource implements Resource {
 		Assert.notNull(filePath," not be null");
 		this.filePath = filePath;
 		this.file = new File(filePath);
+	}
+
+	public FileSystemResource(File file) {
+		Assert.notNull(file," not be null");
+		this.file = file;
+		this.filePath = file.getPath();
 	}
 
 	@Override

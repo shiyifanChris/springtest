@@ -1,7 +1,6 @@
 package org.litespring.beans.propertyeditors;
 
-import org.litespring.beans.TypeMismatchException;
-import org.litespring.utils.StringUtils;
+import org.litespring.util.StringUtils;
 
 import java.beans.PropertyEditorSupport;
 

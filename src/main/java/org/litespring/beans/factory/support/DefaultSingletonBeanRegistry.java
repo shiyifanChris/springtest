@@ -1,9 +1,7 @@
 package org.litespring.beans.factory.support;
 
 import org.litespring.beans.factory.config.SingletonBeanRegistry;
-import org.litespring.utils.Assert;
-import org.litespring.beans.factory.config.SingletonBeanRegistry;
-import org.litespring.utils.Assert;
+import org.litespring.util.Assert;
 
 import java.util.Map;
 import java.util.Objects;
